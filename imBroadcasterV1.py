@@ -100,9 +100,9 @@ def set_ctrls(fuzzy_msg):
 #----------------------------------------------------------------------------------------------------------------------------------------BROADCASTER    
 def im_broadcaster():
     
-    pub_l              = rospy.Publisher('/d_img_l', Image, queue_size=1)    
-    pub_r              = rospy.Publisher('/d_img_r', Image, queue_size=1)
-    pub_cams_status    = rospy.Publisher('/pub_cams_status', cams_status, queue_size=30)
+    pub_l              = rospy.Publisher('/d_img_l', Image, queue_size=0.04)    
+    pub_r              = rospy.Publisher('/d_img_r', Image, queue_size=0.04)
+    pub_cams_status    = rospy.Publisher('/pub_cams_status', cams_status, queue_size=0.04)
     
     ctrls_sub          = rospy.Subscriber('/fuzzy_ctrl', fuzzy_corr, set_ctrls)
     
@@ -138,5 +138,6 @@ def im_broadcaster():
 #--------------------------------------------------------------------------------------------------------------------------------------MAIN SEQUENCE  
 try:
     im_broadcaster()
+    
 except rospy.ROSInterruptException:
     pass
