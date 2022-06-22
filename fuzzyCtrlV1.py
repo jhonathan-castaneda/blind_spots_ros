@@ -117,16 +117,12 @@ def get_correction(aperture_ctrl, gain_ctrl, exp_err, exp_cmos):
     e_controller.compute()
     tunner_e                         =  10
 
-    
     g_controller                     =  ctrl.ControlSystemSimulation(gain_ctrl)
     g_controller.input['exp_err']    =  exp_err
     g_controller.input['cmos_stat']  =  exp_cmos
-    
     g_controller.compute()    
-    
     tunner_g                         =  1
-    
-    
+     
     defuzzy_exp                      =  (e_controller.output['delta_exp'])  *  tunner_e
     defuzzy_gain                     =  (g_controller.output['delta_gain']) *  tunner_g
     
@@ -173,20 +169,22 @@ if __name__ == '__main__':
         sub_r = message_filters.Subscriber('/d_img_r', Image) 
         sub_s = message_filters.Subscriber('/pub_cams_status', cams_status) 
         
-        pub_c = rospy.Publisher('/fuzzy_ctrl', fuzzy_corr, queue_size=1) #4 INITIALIZE PUBLISHER TO RETURN THE CONTROL CORRECTIONS
+        pub_c = rospy.Publisher('/fuzzy_ctrl', fuzzy_corr, queue_size=0.1) #4 INITIALIZE PUBLISHER TO RETURN THE CONTROL CORRECTIONS
         
         
         aperture_ctrl  =  ini_ap_fuzzy() #5 INITIALIZE EXPO CONTROLLERS
         gain_ctrl      =  ini_g_fuzzy()  #6 INITIALIZE GAIN CONTROLLERS
         
-        sync  = message_filters.ApproximateTimeSynchronizer([sub_l, sub_r, sub_s], queue_size=30, slop=0.015) #7 SYNC RETRIEVED DATA      
+        sync  = message_filters.ApproximateTimeSynchronizer([sub_l, sub_r, sub_s], queue_size=1, slop=0.015) #7 SYNC RETRIEVED DATA      
         #IMAGE MESSAGES SHOULD ARRIVE EACH 0.033 S FOR 30 FPS, THEN THE MAX WAITING RANGE FOR SYNC IS 0.015 (HALF BROADCASTING PERIOD)
         
         sync.registerCallback(return_corr)  #8  DEFINE DATA HANDLER
         
-        rospy.spin()                       #9 INITIALIZE PROCESSING LOOP
+        rospy.spin()                        #9 INITIALIZE PROCESSING LOOP
         
     except rospy.ROSInterruptException:
         pass    
 #||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||   
-#||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||  
+#||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||       
+    
+    
