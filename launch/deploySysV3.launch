@@ -1,0 +1,9 @@
+<launch>
+
+	<node name = "im_Broadcaster" pkg="oni_pkg" type="imBroadcasterV3.py" />
+
+	<node name = "fuzzy_Ctrl"     pkg="oni_pkg" type="imFuzzyCtrlV3.py"         />
+
+	<node name = "im_Rectifier"   pkg="oni_pkg" type="imRectifierV3.py"      />
+
+</launch>
