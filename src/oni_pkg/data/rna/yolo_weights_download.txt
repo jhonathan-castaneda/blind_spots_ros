@@ -1,0 +1,5 @@
+DOWNLOAD THE FILE "yolo.weights" TO BE LOCATED IN THIS DIRECTORY.
+
+FILE AVAILABLE AT:
+
+https://uao-my.sharepoint.com/:u:/g/personal/jhonathan_castaneda_uao_edu_co/EXfN8du0scFFi8XaXiATorQBsbLCVWpD7wjwTo1rKgwAtQ?e=kWUgE3
