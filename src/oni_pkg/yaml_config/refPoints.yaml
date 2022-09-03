@@ -1,0 +1,53 @@
+#RIGHT HAND REFERENCE FRAME. ALL UNITS IN mm
+# X AXIS ALONG FRONT DIR. OF THE VEHICLE
+# Y AXIS ORTHOGONAL TO THE LEFT SIDE OF THE VEHICLE
+# Z AXIS ORTHOGONAL TO THE REPOSE PLANE OF THE VEHICLE
+p1:
+  x: -2350
+  y: 2250
+p2:
+  x: -1350
+  y: 1250
+p3:
+  x: 1300
+  y: 1530
+p4:
+  x: 1800
+  y: 2530
+p5:
+  x: 3500
+  y: 1200
+p6:
+  x: 2730
+  y: 700
+p7:
+  x: 2450
+  y: -700
+p8:
+  x: 3220
+  y: -1200
+p9:
+  x: 1800
+  y: -2530
+p10:
+  x: 1300
+  y: -1530
+p11:
+  x: -1350
+  y: -1250
+p12:
+  x: -2350
+  y: -2250
+p13:
+  x: -3460
+  y: -1500
+p14:
+  x: -2960
+  y: -1000
+p15:
+  x: -2680
+  y: 1000
+p16:
+  x: -3180
+  y: 1500
+
