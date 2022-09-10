@@ -30,7 +30,9 @@ cv_bridge rospy roscpp std_msgs message_generation sensor_msgs laser_geometry la
 #---------------------------------------------------------------------------------------------------
 
 --NVIDIA DRIVERS AND LIBS (FOR NVIDIA GEFORCE RTX3050TI -- COMPUTE CAPABILITY 8.6):
--CUDA TOOLKIT 11.7 - DRIVER 515.65.01  >>> https://developer.nvidia.com/cuda-downloads?target_os=Linux&target_arch=x86_64&Distribution=Ubuntu&target_version=18.04&target_type=deb_local
+-CUDA TOOLKIT 11.7 - DRIVER 515.65.01  >>> https://developer.nvidia.com/cuda-downloads?target_os=Linux&target_arch=
+x86_64&Distribution=Ubuntu&target_version=18.04&target_type=deb_local
+
 -CUDNN 8.4.1.50                        >>> https://developer.nvidia.com/rdp/cudnn-archive (SELECT "Download cuDNN v8.4.1 (May 27th, 2022), for CUDA 11.x")
 
 #---------------------------------------------------------------------------------------------------
