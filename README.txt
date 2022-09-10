@@ -47,4 +47,5 @@ cv_bridge rospy roscpp std_msgs message_generation sensor_msgs laser_geometry la
 -opencv_contrib 4.5.5       >>> https://github.com/opencv/opencv_contrib/archive/4.5.5.zip
 
 #°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°
+[TF2(PYTHON3)] --- FOLLOW THE NEXT TO COMPILE: https://answers.ros.org/question/326226/importerror-dynamic-module-does-not-define-module-export-function-pyinit__tf2/
 
