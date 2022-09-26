@@ -75,10 +75,8 @@ def p4b(trk, cl):   #OUTPUT FORMAT: COLS  >>> TRACK_ID , CLASS_ID, BBOX
 #|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 #----------------------------------------------------------------------------------------------------------------------PREPARE DATA FOR BROADCASTING
 def odt(mi):
-    
     f   =  bdg.imgmsg_to_cv2(mi,"mono8")
     f   =  cv2.cvtColor(f, cv2.COLOR_GRAY2BGR)
-
     #CORE/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     cl, sc, bx      =  mod.detect(f, ct, nmt)                                                          # <<< CLASSES, SCORES, BOXES
     ft              =  enc(f, bx)                                                                      # <<< GET FEATURES FOR TRACKING    
@@ -87,16 +85,7 @@ def odt(mi):
     trk.update(det)                                                                                    # <<< KALMAN UPDATE
     sr              =  p4b(trk,cl)                                                                     # <<< PREPARE DATA TO BROADCAST
     #CORE/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    """
-    #ONLY FOR DEBUG----------------------------------------2
-    out7         =  db(trk,f)                                                                      # <<< DRAW BBOXES TO PLOT
-    m7           =  bdg.cv2_to_imgmsg(out7, "bgr8")  
-    p2.publish(m7)
-    #ONLY FOR DEBUG----------------------------------------2
-    """
-    #print(sr)
-    msg.tracks = [x for x in sr.flatten()]                                                         # <<< SERIALIZE DATA
+    msg.tracks = [x for x in sr.flatten()]                                                             # <<< SERIALIZE DATA
     p.publish(msg)          
 
 #--------------------------------------------------------------------------------------------------------------------------------------MAIN SEQUENCE  
