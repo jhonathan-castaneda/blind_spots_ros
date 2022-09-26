@@ -91,32 +91,24 @@ def resc(u, v, lh, rh, fh, bh):
 #----------------------------------------------------------------------------------------------------------------------------------------VOID METHOD 
 #|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 #---------------------------------------------------------------------------------------------------------------------------------UPDATE OBSERVATOR1
-def upob1(dt, obs, rows):    # <<< INPUT: DATA ARRAY, OBSERVATOR OBJECT, NUMBER OF ROWS OF THE dt ARRAY (NUMBER OF TRACKS)
+def upob1(dt, obs, rows):    # <<< INPUTS: DATA ARRAY, OBSERVATOR OBJECT, NUMBER OF ROWS OF THE dt ARRAY (NUMBER OF TRACKS)
 
     out          =  np.zeros((rows,6), np.int16)     # <<< AS MUCH ROWS AS TRACKS: COL1...6 >> TRACK_ID, CLASS_ID, PIX_U, PIX_V, POSX, POSY    
     out[:,0]     =  dt[:,0]                          # <<< KEEP THE FIRST TWO COLUMNS EQUAL SINCE THEY ARE THE TRACK IDS AND THE CLASS IDS
     out[:,1]     =  dt[:,1]                          # <<< KEEP THE FIRST TWO COLUMNS EQUAL SINCE THEY ARE THE TRACK IDS AND THE CLASS IDS
 
     for t in range(rows):
-
         trc              =  dt[t,:]                                           # <<< CURRENT TRACK ROW OF INFO (6 COLUMNS)
         c2, c3, c4, c5   =  trc[2], trc[3], trc[4], trc[5]                    # <<< SPLIT DATA OF THE BBOXES (TOP LEFT CORNER AND BOTOM RIGHT CORNER)
         ut, vt           =  int( round( ( c4 + c2)/2) )  , int(round( c5 ))   # <<< FIND BASE POINT (BBOX CENTROID IN X AND BOTOM OF BBOX IN Y)
-        ut2, vt2, h4     =  resc(ut, vt, lh, rh, fh, bh)                      # <<< RE-SCALE PIXELS, AND SELECT RESPECTIVE HOMOGRAPHY TEMPLATE MTX
-        #print(ut2, vt2)
-        #CORE FOR MEASUREMENT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        #BE CAREFUL WITH THE TRANSPOSED:\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-            
-        sp     =  np.array([[ ut2 ],[ vt2 ],[ 1 ]])                                 # <<<  SURROUND PIXEL IN HOMOGENEOUS COORDS.
-        vp1    =  np.matmul(h4,sp)                                             # <<<  VIRTUAL PIXEL IN HOMOGENEOUS COORDS(NOT NORMALIZED).
-        vp2    =  vp1/vp1[2]                                                      # <<<  VIRTUAL PIXEL IN HOMOGENEOUS COORDS(NORMALIZED !!!).
-        ub, vb =  vp2[0], vp2[1]                                                  # <<<  VIRTUAL PIXEL COMPONENTS READY TO BE EXTRACTED.
-            
+        ut2, vt2, h4     =  resc(ut, vt, lh, rh, fh, bh)                      # <<< RE-SCALE PIXELS, AND SELECT RESPECTIVE HOMOGRAPHY TEMPLATE MTX      
+        sp     =  np.array([[ ut2 ],[ vt2 ],[ 1 ]])                           # <<< SURROUND PIXEL IN HOMOGENEOUS COORDS.
+        vp1    =  np.matmul(h4,sp)                                            # <<< VIRTUAL PIXEL IN HOMOGENEOUS COORDS(NOT NORMALIZED).
+        vp2    =  vp1/vp1[2]                                                  # <<< VIRTUAL PIXEL IN HOMOGENEOUS COORDS(NORMALIZED !!!).
+        ub, vb =  vp2[0], vp2[1]                                              # <<< VIRTUAL PIXEL COMPONENTS READY TO BE EXTRACTED.
+        
         out[t,2] , out[t,3] = ub, vb
         
-    setattr(obs, 'tracks', out )                                                  # <<< UPDATE OBSERVATOR 1 WITH ALL THE STATE DATA
-    
     return(out)
 #---------------------------------------------------------------------------------------------------------------------------------CALLBACK-METHOD1.1 
 #|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
