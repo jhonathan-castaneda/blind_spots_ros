@@ -232,19 +232,19 @@ def bct():
 #------------------------------------------------------------------------------------------------------------------------------ GENERAL V4L SETTINGS
 if __name__ == "__main__":
     parser  =  argparse.ArgumentParser()
-    parser.add_argument("--pixelFormat",      type=str,  default="M,J,P,G",        help='"M,J,P,G" or "Y,U,Y,V", default="M,J,P,G"') #pixel_format
-    parser.add_argument("--fps",               type=int,  default=30,               help="default=30")   
-    parser.add_argument("--field",             type=str,  default="top",            help="top, bottom, any or none default=top=30fps") #general
-    parser.add_argument("--imageWidth", type=int,  default=1280,                   help="default=1280")
-    parser.add_argument("--imageHeight",type=int,  default=720,                    help="default=720")   
-    parser.add_argument("--exposureAutoPriority", action="store_true", default=0, help="(bool) default=0")             # FLAG_ONLY_FOR_THE A30330
-    parser.add_argument("--exposureAuto",          action="store_true", default=1, help="(1=manual,3=auto) default=1")  # flag
-    parser.add_argument("--exposureAbsolute",      type=int,  default=3,           help="min=3 max=2047 step=1 default=500")  
-    parser.add_argument("--gain",                   type=int,  default=10,          help="min=0 max=255 step=1 default=250")   
-    parser.add_argument("--backlightCompensation", type=int,  default=0,           help="min=0 max=1 step=1 default=0")#general
-    parser.add_argument("--brightness", type=int,  default=4,                       help="min=-64 max=64 step=1 default=4")#general
-    parser.add_argument("--contrast",   type=int,  default=7,                       help="min=0 max=95 step=1 default=20")#general
-    parser.add_argument("--saturation", type=int,  default=1,                       help="min=0 max=100 step=1 default=0")#general
+    parser.add_argument("--pixelFormat",            type=str,  default="M,J,P,G",   help='"M,J,P,G" or "Y,U,Y,V", default="M,J,P,G"')
+    parser.add_argument("--fps",                    type=int,  default=30,          help="default=30")   
+    parser.add_argument("--field",                  type=str,  default="top",       help="top, bottom, any or none default=top=30fps") 
+    parser.add_argument("--imageWidth",             type=int,  default=1280,        help="default=1280")
+    parser.add_argument("--imageHeight",            type=int,  default=720,         help="default=720")   
+    parser.add_argument("--exposureAutoPriority",  action="store_true", default=0,  help="(bool) default=0")            
+    parser.add_argument("--exposureAuto",          action="store_true", default=1,  help="(1=manual,3=auto) default=1")  
+    parser.add_argument("--exposureAbsolute",       type=int,  default=3,           help="min=3 max=8186 step=1 default=3")  
+    parser.add_argument("--gain",                   type=int,  default=10,          help="min=0 max=255 step=1 default=10")   
+    parser.add_argument("--backlightCompensation",  type=int,  default=0,           help="min=0 max=1 step=1 default=0")
+    parser.add_argument("--brightness",             type=int,  default=4,           help="min=-64 max=64 step=1 default=4")
+    parser.add_argument("--contrast",               type=int,  default=7,           help="min=0 max=95 step=1 default=7")
+    parser.add_argument("--saturation",             type=int,  default=1,           help="min=0 max=100 step=1 default=1")
    
     #args = parser.parse_args()
     args, unknown = parser.parse_known_args()
