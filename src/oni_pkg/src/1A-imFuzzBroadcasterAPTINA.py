@@ -245,8 +245,6 @@ if __name__ == "__main__":
     parser.add_argument("--brightness",             type=int,  default=4,           help="min=-64 max=64 step=1 default=4")
     parser.add_argument("--contrast",               type=int,  default=7,           help="min=0 max=95 step=1 default=7")
     parser.add_argument("--saturation",             type=int,  default=1,           help="min=0 max=100 step=1 default=1")
-   
-    #args = parser.parse_args()
     args, unknown = parser.parse_known_args()
     print(args)
 #|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
