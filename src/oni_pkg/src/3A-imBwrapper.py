@@ -76,20 +76,18 @@ def find_s_cor(v_cor, rt):
 #-------------------------------------------------------------------------------------------------------------------------------GET THE WRAPPING MAP
 def wmap(h, vki, rt_mtx, fc_kc, img):    #INPUTS: VIRTUAL_FOCAL_LENGHT, VIRTUAL_CAM_INVERSE_PINHOLE_MTX, REAL_CAM_RT_MATRIX,
                                          #        REAL_CAM_PINHOLE_MTX, AND IMAGE FROM REAL_CAMERA
-
     v_img    =  np.zeros((500,500), np.uint8)
     wm       =  np.zeros((500,500,2), np.uint16)    
     for u in range(0,500):
         for v in range(0,500):
-
             v_pixel      =  np.array([[u],[v],[1]])        
             v_cordinate  =  pix2cor(v_pixel, h_vir, vki) 
             s_cordinate  =  find_s_cor(v_cordinate, rt_mtx)   
             H_VAR        =  s_cordinate[2] 
             s_pix        =  cor2pix(s_cordinate, H_VAR, fc_kc)  
             s_pix_int    =  np.array([[s_pix[0]],[s_pix[1]]],np.uint16)  
+            
             if s_pix_int[0] > 0 and s_pix_int[0] < 1279 and s_pix_int[1] > 0 and s_pix_int[1] < 719:
-
                     wm[u,v,0] = s_pix_int[0]
                     wm[u,v,1] = s_pix_int[1]
             else:
