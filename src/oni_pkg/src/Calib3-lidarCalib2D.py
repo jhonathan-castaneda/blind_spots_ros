@@ -148,7 +148,8 @@ def find_hmt(srv, ref_path, target):
  #--------------------------------------------------------------------------------------------------------------------------------------------METHOD2 
 #|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 #-----------------------------------------------------------------------------------------------------------------------------FIND INDIVIDUAL POINTS        
-def find_landmark(key, coords, srv, target_lid):     #target_lid is 1 or 2 for left and right
+def find_landmark(key, coords, srv, target_lid): #INPUTS: key(REFERENCE POINT P1, P2 OR P3), coords(DETECTIONS CENTROIDS), 
+                                                 #        srv(CALIBRATION_STATUS_SERVER) and target_lid (is 1 or 2 for left and right)
     
     rad2match = (getattr(srv, 'lidar_'+l_id[target_lid]+'_refs')[key,0])/1000  # <<< LOAD RADIOUS REF AND CONVERT TO METERS
     rads      = np.zeros((len(coords), 1), np.float32)                         # <<< ARRAY OF RADIAL DISTANCE MEASURED UP TO THE DETECTIONS
