@@ -220,25 +220,15 @@ if __name__ == "__main__":
     
     #CHANGE THIS PER AN IMPORTATION FROM THE AUTOCALIB DETECTOR
     vc_kc, vc_kc_inv, h_vir  = init_vir_mtx(fov,s,m,n,vo_path)      #  1 -- INITIALIZE VIRTUAL CAMERA MATRIX AND ITS INVERSE 
-
-    import_im_calib(args.intrinsic_data)                            #  2 -- IMPORT CALIBRATION DATA OF ALL THE CAMERAS FROM THE MAIN CALIB .YAML FILE --- UPLOAT TO ROS PARAM. SERVER
-    
-    for i in range (len(cams_ids)):                                 #  3 -- PERFORM EXTRINSIC CALIBRATION FOR EVERY CAMERA (BIRD VIEW CALIB)
-        
-            target  =  cams_ids[i+1]                                                                    # A --- GET THE IDENTIFIER OF THE IMAGE SORUCE
-            
-            fc_list =  rospy.get_param(target +'_mtx_k')                                                # B --- LOAD THE PINHOLE MTX DATA FOR THE TARGET IMAGE SOURCE, OBTAIN FROM ROS PARAM. SERVER
-                                                                                                         
-            fc_kc   =  list2mtx_k(fc_list)                                                              # C --- ORGANIZE PINHOLE MTX FROM THE LIST OF THE ROS PARAM. SERVER
-            
+    import_im_calib(args.intrinsic_data)                            #  2 -- IMPORT CALIBRATION DATA OF ALL THE CAMERAS FROM THE MAIN CALIB .YAML FILE 
+    for i in range (len(cams_ids)):                                 #  3 -- PERFORM EXTRINSIC CALIBRATION FOR EVERY CAMERA (BIRD VIEW CALIB)  
+            target                   =  cams_ids[i+1]                                                   # A --- GET THE IDENTIFIER OF THE IMAGE SORUCE     
+            fc_list                  =  rospy.get_param(target +'_mtx_k')                               # B --- LOAD THE PINHOLE MTX DATA FOR THE TARGET IMAGE SOURCE                                                                                               
+            fc_kc                    =  list2mtx_k(fc_list)                                             # C --- ORGANIZE PINHOLE MTX FROM THE LIST OF THE ROS PARAM SRV. 
             v_pix, v_cor, f_points   =   import_ref(args.ref_calib_points, h_vir, vc_kc_inv, target)    # D --- GET CALIB POINTS FROM THE TARGET IMAGE SOURCE
-            
-            get_rt_mtx(fc_kc, v_pix, v_cor, f_points, target, args.outHomographyPath)                   # E --- CALCULATE RT MTX FOR EACH IMAGE SOURCE AND SAVE THE RT AND RT_INV MTXES
-            
-            path2export = args.out_path_ext                                                             # F --- SET EXPORTATION PATH FOR THE CALIB RESULTS
-            
+            get_rt_mtx(fc_kc, v_pix, v_cor, f_points, target, args.outHomographyPath)                   # E --- CALCULATE RT MTX FOR EACH IMAGE SOURCE AND SAVE THE RT 
+            path2export = args.out_path_ext                                                             # F --- SET EXPORTATION PATH FOR THE CALIB RESULTS     
     export_mtx(path2export)                                                                             # G --- EXPORT THE CALIBRATION RESULTS TO .YAML FILE
-               
     print ('\n'+ 'CALIBRATION RESULTS SUCCESSFULLY STORED AT:' + '\n\n'+ path2export)                   # H1 --- NOTIFY CALIBRATION IS READY
     print ('\n')
     print ('\n'+ 'HOMOGRAPHY MATRIXES EXTRACTED AND AVAILABLE AT:' + '\n\n'+ args.outHomographyPath)    # H2 --- NOTIFY CALIBRATION IS READY
