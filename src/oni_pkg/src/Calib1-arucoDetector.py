@@ -232,49 +232,35 @@ def detect(im, markerSize=4, totalMarkers = 250, draw=True ):
 #---------------------------------------------------------------------------------------------------------------------------------------------METHOD
 #|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||  --EX2--
 #----------------------------------------------------------------------------------------CHECK IMG, TO DETECT LANDMARKS AND EXTRACT REFERENCE POINTS
-def check(im, Id): #im is the frame and Id the image source identifier... 1, 2, 3 or 4 for l, r, f, or b camera    
-  
-    bgr = cv2.cvtColor(im ,cv2.COLOR_GRAY2BGR) #CONVERT GRAYSCALE FRAME OF MONO8 FORMAT INTO BGR TO DETECT ARUCO MARKERS AND EXPORT WITH COLOR
-
-    bbox, ids  =  detect(bgr)                              # 1 --- SEARCH FOR TARGETS 
-
-    #bbox, ids  =  detect(im)                              # 1 --- SEARCH FOR TARGETS 
-    #print(im.shape)
-    
-    #o = bdg.cv2_to_imgmsg(im, "mono8")                     # 2 --- SET OUTPUT MSG (IMG WITH THE DETECTIONS ON IT)
-    o = bdg.cv2_to_imgmsg(bgr, "bgr8")                     # 2 --- SET OUTPUT MSG (IMG WITH THE DETECTIONS ON IT)
-
-    pub.publish(o)
-    
+def check(im, Id): #im is the frame and Id the image source identifier  
+    bgr        = cv2.cvtColor(im ,cv2.COLOR_GRAY2BGR) 
+    bbox, ids  = detect(bgr)                          #  --- SEARCH FOR ARUCO TARGETS 
+    o          = bdg.cv2_to_imgmsg(bgr, "bgr8")       #  --- SET OUTPUT MSG, ARUCO DETECTIONS (FOR VISUAL FEEDBACK)
+    pub.publish(o) 
     try:        
         d = [ids[0,0]  , ids[1,0] , ids[2,0] , ids[3,0]]
-        
-        if ((len(ids)) == 4) & (sum(s_id[Id]) == sum(d) ): # 4 --- IF ALL THE REFERENCE LANDMARKS ARE AVAILABLE AND DETECTED, CONTINUE            cen = np.zeros((4,3))
-                                                           # WE USE THE SUM TO CHECK EVERY SINGLE SEQUENCE CAUSE THE SUME OF THE ELEMENTS OF EACH ONE IS DIFFERENT FROM THE OTHERS
+        if ((len(ids)) == 4) & (sum(s_id[Id]) == sum(d) ): #   --- IF ALL THE REFERENCE LANDMARKS ARE AVAILABLE AND DETECTED, CONTINUE                                           
+                                                           #       WE USE THE SUM TO CHECK EVERY SINGLE SEQUENCE CAUSE THE SUME 
+                                                           #       OF THE ELEMENTS OF EACH ONE IS DIFFERENT FROM THE OTHERS
             cen = np.zeros((4,3))
-            for i in range(4):          # 4 --- OBTAIN THE CENTROID FOR EACH BOUNDING BOX AND FILL THE CENTROIDS ARRAY (COORDS. AND LANDMARK ID)
-
-                pts =  bbox[i]
-                p   =  pts[0]
-                x,y =  p[:,0], p[:,1]  # [:,0] FOR FIRST COLUMN OF X VALUES  &  [:,1] FOR SECOND COLUMN OF Y VALUES
-                lth = len(x)
-
-                cen[i,0] = round(sum(x)/lth)   # CENTROID COORD X 
-                cen[i,1] = round(sum(y)/lth)   # CENTROID COORD Y
-                cen[i,2] = ids[i]              # CENTROID ARUCO ID
+            for i in range(4):          #  --- OBTAIN THE CENTROID FOR EACH BOUNDING BOX AND 
+                                        #       FILL THE CENTROIDS ARRAY (COORDS. AND LANDMARK ID)
+                pts       =  bbox[i]
+                p         =  pts[0]
+                x,y       =  p[:,0], p[:,1]  
+                lth       =  len(x)
+                cen[i,0]  =  round(sum(x)/lth)   # CENTROID COORD X 
+                cen[i,1]  =  round(sum(y)/lth)   # CENTROID COORD Y
+                cen[i,2]  =  ids[i]              # CENTROID ARUCO ID
                 
-            load(cen, Id) #LOAD THE REFERENCE POINTS FOR THE CURRENT IMAGE SOURCE IN THE SERVER 
-                        
-            out = print_detections(bgr, cen, Id)
-            
-            nm = (c_id[Id])+'_out_from_ext_calib.png'   
-            cv2.imwrite(nm, out)   #EXPORT THE IMAGE WITH THE ARUCO DETECTIONS ON IT
-                        
+            load(cen, Id) #LOAD THE REFERENCE POINTS FOR THE CURRENT IMAGE SOURCE IN THE SERVER            
+            out           = print_detections(bgr, cen, Id)
+            nm            = (c_id[Id])+'_out_from_ext_calib.png'   
+            cv2.imwrite(nm, out)              #EXPORT THE IMAGE WITH THE ARUCO DETECTIONS ON IT (FOR DEBUG)             
         else:
             pass   
     except:        
         pass
-
 #---------------------------------------------------------------------------------------------------------------------------------------------METHOD
 #||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||   --EX1.1--
 #------------------------------------------------------------------------------------------------------------------------im4extCalib SERVICE REQUEST 
