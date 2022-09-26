@@ -151,37 +151,24 @@ def find_hmt(srv, ref_path, target):
 def find_landmark(key, coords, srv, target_lid):     #target_lid is 1 or 2 for left and right
     
     rad2match = (getattr(srv, 'lidar_'+l_id[target_lid]+'_refs')[key,0])/1000  # <<< LOAD RADIOUS REF AND CONVERT TO METERS
-    rads      = np.zeros((len(coords), 1), np.float32) # <<< ARRAY OF RADIAL DISTANCE MEASURED UP TO THE DETECTIONS
-    
+    rads      = np.zeros((len(coords), 1), np.float32)                         # <<< ARRAY OF RADIAL DISTANCE MEASURED UP TO THE DETECTIONS
     rx        = np.zeros((len(coords), 1), np.float32)
-    
-    idx       = 0                                      # <<< INDEX TO STORE THE POSITION OF THE VALID SAMPLE FOR CALIB
-    
+    idx       = 0                                        # <<< INDEX TO STORE THE POSITION OF THE VALID SAMPLE FOR CALIB
     for i in range(len(rads)):
-        a = np.power(coords[i,0], 2) 
-        b = np.power(coords[i,1], 2) 
-        r = np.sqrt( a + b )         # <<< RADIAL DISTANCE TO EACH X,Y POINT IN THE DETECTIONS 
-        
-        rx[i] = r
-        
-        if  r < (rad2match+0.1) and r > (rad2match-0.1) :  #IF RADIAL DISTANCE TO THE CLUSTER IS IN THE RANGE OF rad2match +-0.1 METERS (SENSIBLE RANGE)
-            rads[i] = r                
-            idx     = i
+        a,b = np.power(coords[i,0], 2) , np.power(coords[i,1], 2)
+        r = np.sqrt( a + b ) ; rx[i] = r                 # <<< RADIAL DISTANCE TO EACH X,Y POINT IN THE DETECTIONS     
+
+        if  r < (rad2match+0.1) and r > (rad2match-0.1) :# IF RADIAL DISTANCE TO THE CLUSTER IS IN THE RANGE OF rad2match (SENSIBLE RANGE)
+            rads[i], idx = r , i                  
         else:
-            rads[i] = 0
-    
-    #print(rads)
-    #print(rad2match)
-    #print(rx)
-        #GET SURE THAT THE ACQUIRED POINT IS THE ONLY ONE IN THE SENSIBLE RANGE----------------------------------------------------------
-    if rads[idx] == np.sum(rads) and rads[idx] !=0:                 # <<< IF THE SAMPLE IS THE ONLY VALID VALUE IN THE SENSIBLE RANGE        
-        if target_lid ==1: # IF LEFT LIDAR           
-             coords_l[key,0] ,  coords_l[key,1] = coords[idx,0], coords[idx,1]
-                  
-        if target_lid ==2: #IF RIGHT LIDAR         
-             coords_r[key,0] ,  coords_r[key,1] = coords[idx,0], coords[idx,1]      
-            
-        setattr(srv, ('lidar_'+l_id[target_lid]+'_p'+str(key+1)) , 1 )                                         #SET FLAG FOR Px AS CALIBRATED       
+            rads[i] = 0     
+    #GET SURE THAT THE ACQUIRED POINT IS THE ONLY ONE IN THE SENSIBLE RANGE--------------------------------------------------------------
+    if rads[idx] == np.sum(rads) and rads[idx] !=0:                     # <<< IF THE SAMPLE IS THE ONLY VALID VALUE IN THE SENSIBLE RANGE        
+        if target_lid ==1:                                              # <<< IF LEFT LIDAR           
+             coords_l[key,0] ,  coords_l[key,1] = coords[idx,0], coords[idx,1]        
+        if target_lid ==2:                                              # <<< IF RIGHT LIDAR         
+             coords_r[key,0] ,  coords_r[key,1] = coords[idx,0], coords[idx,1]            
+        setattr(srv, ('lidar_'+l_id[target_lid]+'_p'+str(key+1)) , 1 )                                     #SET FLAG FOR Px AS CALIBRATED       
         rospy.loginfo('REF. P'+str(key+1)+'=['+str(coords[idx,0])+','+str(coords[idx,1])+']'+' FOR LIDAR_'+l_id[target_lid]+' ACQUIRED.')                     
     else:
         pass        
