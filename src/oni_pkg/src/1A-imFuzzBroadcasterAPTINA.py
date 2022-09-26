@@ -39,25 +39,23 @@ def expe(hst):
 #---------------------------------------------------------------------------------------------------------------------------------------------METHOD
 #|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||  
 #-------------------------------------------------------------------------------------------------------------------------GET_FUZZY_CORRECTION_VALUE
-def corr(actrl, gctrl, expErr, expCmos):    # INPUTS: EXPOSURE ERROR AND CMOS STATUS (CURRENT CAMERA EXPOSURE)
-    
-    ec                     =  ctrl.ControlSystemSimulation(actrl)   # "ec" IS EXPOSURE CONTROLLER
+def corr(actrl, gctrl, expErr, expCmos):    # INPUTS: EXPOSURE CONTROLLER, GAIN CONTROLLER, EXPOSURE ERROR, 
+                                            #         AND CURRENT CAMERA EXPOSURE               
+    ec                     =  ctrl.ControlSystemSimulation(actrl)   # << "ec" IS EXPOSURE CONTROLLER
     ec.input['expErr']     =  expErr
     ec.compute()
-    
-    et                     =  3 #EXPOSURE TUNNER
+    et                     =  3 # << EXPOSURE TUNNER OR ALPHA_1
 
-    gc                     =  ctrl.ControlSystemSimulation(gctrl)   # "gc" IS GAIN CONTROLLER
+    gc                     =  ctrl.ControlSystemSimulation(gctrl)   # << "gc" IS GAIN CONTROLLER
     gc.input['expErr']     =  expErr
     gc.input['cmosStat']   =  expCmos
-    gc.compute()    
-    
-    gt                     =  1    # GAIN TUNNER
+    gc.compute()       
+    gt                     =  1 # << GAIN TUNNER OR ALPHA_2
      
-    dexp                   =  (ec.output['deltaExp'])  *  et
-    dg                     =  (gc.output['deltaGain']) *  gt
+    dexp                   =  (ec.output['deltaExp'])  *  et # << ESTIMATED DELTA EXPOSURE
+    dg                     =  (gc.output['deltaGain']) *  gt # << ESTIMATED DELTA GAIN
     
-    return dexp, dg         # RETURN DEFUZZY EXPOSURE AND DEFUZZY GAIN
+    return dexp, dg         # RETURN DEFUZZYFICATED DELTA_EXPOSURE AND DELTA_GAIN
 #---------------------------------------------------------------------------------------------------------------------------------------------METHOD
 #||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| 
 #---------------------------------------------------------------------------------------------------------------INITIALIZE_FUZZY_EXPOSURE_CONTROLLER
