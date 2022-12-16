@@ -1,6 +1,10 @@
 # blind_spots_ros
 
-#PROJECT IN PROGRESS-- WAIT4 FINAL VER.
+#DOCS AND MATH. CORES AVAILABLE AT:   https://hdl.handle.net/10614/14455
+
+-- FEEL FREE TO CONTACT ME FOR MORE INFO ABOUT THE NODES OF THE SYSTEM.
+-- jhonathan.castaneda@uao.edu.co  or castanj06@gmail.com
+
 #---------------------------------------------------------------------------------------------------
 #REQUIREMENTS:
 
